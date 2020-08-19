@@ -80,37 +80,39 @@ if(isset($_POST['submit'])){
     <!-- Main Content Area Start -->
     <section class="main-content-wrapper section_padding_50">
         <div class="container-fluid">
-          <h5><b>Add Notices/Letters</b></h5>
-          <form method="post" >
-            <div class="row">
+          <h5><b>Add Links</b></h5>
+          <form method="post"> 
+          <div class="row">
                 <div class="col-3">
                     <h6>Name</h6>
-               
+                
                         <div class="form-group">
-                            <input type="text"  name="data" placeholder="Enter Name" class="form-control">
+                            <input type="text" name="data" placeholder="Enter Name" class="form-control" required>
                         </div>
-    
-
+              
                 </div>
         
                 <div class="col-3">
                     <h6>Link</h6>
-              
+                   
                         <div class="form-group">
-                        <input type="text"  name="desc" placeholder="Enter Link" class="form-control">
+                            <input type="text" name="desc" placeholder="Enter Description" class="form-control" required>
                         </div>
-               
+                  
 
                 </div>
-               
+             
                 <div class="col-3">
-                    
-                <!-- <button id="upload-btn" type="button">Upload</button> -->
-                <input type="submit" id="upload-btn" name="submit" value="Upload">
+                    <h6 class="text-white">.</h6>
+                <button class="btn-upload" name="submit"  type="submit">Upload</button>
                     
                 </div>
-            </div>
+                </div>
 </form>
+            </div>
+
+            </div>
+
     
         </div>
 
@@ -124,7 +126,7 @@ if(isset($_POST['submit'])){
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><b>Baneer List</b></h5>
+                        <h5 class="card-title"><b>Links List</b></h5>
                         <div class="table-responsive">
                             <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                 <thead>

@@ -87,24 +87,20 @@ if(isset($_POST['submit'])){
     <section class="main-content-wrapper section_padding_50">
         <div class="container-fluid">
             <h5><b>Add Gallery Images</b></h5>
-            <form method="post" enctype='multipart/form-data'>
+            <form method="post"  enctype='multipart/form-data'> 
             <div class="row">
-            <!-- <form method="post"> -->
-                <div class="column">
-                   
+       
+                <div class="column col-3">
                     <div class='file-input'>
-                        <input type="file" name="file" required>
+                        <input type='file' name="file" required>
                         <span class='button'>Choose</span>
                         <span class='label' data-js-label>No file selected</label>
                       </div>
                 </div>
-                <div class="column">
-                    
-                    <!-- <button id="upload-btn" type="button">Upload</button> -->
-                    <input type="submit" id="upload-btn" name="submit" value="Upload">
+                <div class="column col-3">
+                    <button id="upload-btn" type="submit" name="submit">Upload</button>
 
                 </div>
-<!-- </form> -->
            <!--    <div class="col-sm-12 col-md-6 col-lg-4">
                    
                             <h5 class="card-title"><b>Add Banner Image</b></h5>
@@ -122,9 +118,12 @@ if(isset($_POST['submit'])){
                             </form>
                       
                 </div>-->
+                </div>
+                </form>
             </div>
-        </div>
-</form>
+          
+        </div> 
+    </div>
 <br>
         <!-- Catagory Posts Area End -->
     <div class="container-fluid">
@@ -136,7 +135,7 @@ if(isset($_POST['submit'])){
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><b>Gallery Images List<</b></h5>
+                        <h5 class="card-title"><b>Gallery Images List</b></h5>
                         <div class="table-responsive">
                             <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                 <thead>

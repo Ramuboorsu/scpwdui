@@ -34,7 +34,7 @@ if(isset($_POST['submit'])){
                   // $result = mysqli_array($insert_img);
                 if($insert_img)
                 {
-                  echo '<script>alert("Successfully Inserted");</script>';
+                  echo '<script>alert("Successfully Inserted");window.location.href="adminsummons.php";</script>';
                 }
     } 
     if(@$_GET['step'] == 'delete')
@@ -97,25 +97,24 @@ if(isset($_POST['submit'])){
     <section class="main-content-wrapper section_padding_50">
         <div class="container-fluid">
           <h5><b>Add Summons</b></h5>
-          <form method="post" enctype='multipart/form-data'>
-            <div class="row">
+          <form method="post"  enctype='multipart/form-data'> 
+          <div class="row">
                 <div class="col-3">
                     <h6>Name</h6>
-               
+                
                         <div class="form-group">
-                            <input type="text"  name="data" placeholder="Enter Name" class="form-control">
+                            <input type="text" name="data" placeholder="Enter Name" class="form-control" required>
                         </div>
-    
-
+              
                 </div>
         
                 <div class="col-3">
                     <h6>Description</h6>
-              
+                   
                         <div class="form-group">
-                        <input type="text"  name="desc" placeholder="Enter Description" class="form-control">
+                            <input type="text" name="desc" placeholder="Enter Description" class="form-control" required>
                         </div>
-               
+                  
 
                 </div>
                 <div class="col-3">
@@ -128,16 +127,18 @@ if(isset($_POST['submit'])){
                     
                 </div>
                 <div class="col-3">
-                    
-                <!-- <button id="upload-btn" type="button">Upload</button> -->
-                <input type="submit" id="upload-btn" name="submit" value="Upload">
+                    <h6 class="text-white">.</h6>
+                <button class="btn-upload" name="submit"  type="submit">Upload</button>
                     
                 </div>
-            </div>
+                </div>
 </form>
+            </div>
+
+            </div>
+
     
         </div>
-
         <!-- Catagory Posts Area End -->
     <div class="container-fluid">
         <!-- ============================================================== -->

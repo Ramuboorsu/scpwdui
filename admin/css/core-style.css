@@ -1496,3 +1496,21 @@ textarea.form-control {
       background-color: #EC8D22 !important;
       color: white;
   }
+
+ 
+.count {
+    width: 60px;
+    height: 60px;
+    background: #EC8D22;
+    border-radius: 50%;
+    border: 1px solid #EC8D22;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    float: left;
+    margin: 4%;
+  
+}
