@@ -7,50 +7,18 @@ if($_SESSION['userSession'] == '')
 }
 //include dbconnect
 include("dbconnect.php");
-if(isset($_POST['submit'])){
-
-    $name = $_POST['data'];
-    $desc = $_POST['desc'];
-     $output_dir = "../images/notices/";
-      $target_file = $output_dir;
-     $countfiles = count($_FILES['file']['name']);
-     // Looping all files
-      $filename = $_FILES['file']['name'];
-     $fullname =  $target_file.$filename;
-      // Upload file
-      move_uploaded_file($_FILES['file']['tmp_name'],$fullname);
-     // $RandomNum   = time();
-            
-                // $ImageName      = str_replace(' ','-',strtolower($_FILES['file']['name']));
-                $ImageType      = $_FILES['file']['type']; /*"image/png", image/jpeg etc.*/
-             
-                // $ImageExt = substr($ImageName, strrpos($ImageName, '.'));
-                // $ImageExt       = str_replace('.','',$ImageExt);
-                // $ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
-                $NewImageName = $filename ;
-                
-                
-                $insert_img = mysqli_query($con,"insert into notices(name,description,doc) values('$name','$desc','$NewImageName')");
-                  // $result = mysqli_array($insert_img);
-                 if($insert_img)
-                {
-                  echo '<script>alert("Successfully Inserted");window.location.href="adminnotices.php";</script>';
-                }
-    } 
-    if(@$_GET['step'] == 'delete')
-    {
-    $id = @$_GET['q'];
-
-        $del = mysqli_query($con,"delete from notices where id = $id");
-        if($del)
-        {
-            echo '<script>alert("Successfully Deleted");window.location.href="adminnotices.php";</script>';
-    
-        }
-    }
-
-
-
+if(isset($_GET['p']))
+{
+    $id =$_GET['id'];
+    $update = mysqli_query($con,"update `complaints_form` set status='Pending' where `id` = '$id'")or die($con->error);
+  }else if(isset($_GET['u']))
+  {
+    $id =$_GET['id'];
+    $update = mysqli_query($con,"update `complaints_form` set status='Underprocess' where `id` = '$id'")or die($con->error);
+  }else if(isset($_GET['t'])){
+    $id =$_GET['id'];
+    $update = mysqli_query($con,"update `complaints_form` set status='ToBeAttended' where `id` = '$id'")or die($con->error);
+  }
     
 ?>
 <!DOCTYPE html>
@@ -81,12 +49,22 @@ if(isset($_POST['submit'])){
      <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <!--script for confirmation-->
 <script src="js/confirmmsg.js"></script>
+<style>
+    #zero_config {
+max-width: 600px;
+margin: 0 auto;
+}
+#zero_config th, td {
+white-space: nowrap;
+}
+</style>
+
 </head>
 
 <body>
      <!-- style for active class -->
      <style>
-  #navbarDropdown1{
+  #navbarDropdown2{
      color:black;
  }
     </style>
@@ -97,50 +75,7 @@ if(isset($_POST['submit'])){
 
     <!-- Main Content Area Start -->
     <section class="main-content-wrapper section_padding_50">
-        <div class="container-fluid">
-          <h5><b>Add Notices/Letters</b></h5>
-          <form method="post"  enctype='multipart/form-data'> 
-          <div class="row">
-                <div class="col-3">
-                    <h6>Name</h6>
-                
-                        <div class="form-group">
-                            <input type="text" name="data" placeholder="Enter Name" class="form-control" required>
-                        </div>
-              
-                </div>
-        
-                <div class="col-3">
-                    <h6>Description</h6>
-                   
-                        <div class="form-group">
-                            <input type="text" name="desc" placeholder="Enter Description" class="form-control" required>
-                        </div>
-                  
-
-                </div>
-                <div class="col-3">
-                    <h6>File</h6>
-                    <div class='file-input'>
-                        <input type='file' name="file">
-                        <span class='button'>Choose</span>
-                        <span class='label' data-js-label>No file selected</label>
-                      </div>
-                    
-                </div>
-                <div class="col-3">
-                    <h6 class="text-white">.</h6>
-                <button class="btn-upload" name="submit"  type="submit">Upload</button>
-                    
-                </div>
-                </div>
-</form>
-            </div>
-
-            </div>
-
-    
-        </div>
+     
 
         <!-- Catagory Posts Area End -->
     <div class="container-fluid">
@@ -152,41 +87,92 @@ if(isset($_POST['submit'])){
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><b>Notices/Letters List</b></h5>
+                        <center><h5 class="card-title"><b>Disposed Off Grievance</b></h5></center>
                         <div class="table-responsive">
                             <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                 <thead>
                                     <tr>
-                                    <th>S.no</th>
-                                    <th>Name</th>
-                                 <th>Description</th>
-                                    <th>Document</th>
-                                   <th>Action</th> 
-                                      
+                                    <th>Id</th>
+                <th>Date</th>
+                <th>Un_id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Permenant_address</th>
+                <th>Correspondence_Address</th>
+                <th>District</th>
+                <th>Contact_No.</th>
+                <th>Disability Type</th>
+                <th>Disability Certificate No.</th>
+                <th>Disability Percentage</th>
+                <th>Disability Proof</th>
+                <th>Issuing Authority </th>
+                <th>Valid Upto</th>
+                <th>W.O/S.O/D.O</th>
+                <th>Complaint Description</th>
+                <th>Supplementory Proof</th>
+                <th>Respondent Name</th>
+                <th>Respondent Address</th>
+                <th>Status</th>
+                <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <?php
-$sel = mysqli_query($con,"select * from notices");
-$cnt = 1;
+        $cnt =1;
+$sel = mysqli_query($con,"select * from complaints_form where status='DisposedOff'");
 while($fet = mysqli_fetch_assoc($sel))
 {
 $id = $fet['id'];
+$date = $fet['date'];
+$unid = $fet['unid'];
 $name = $fet['name'];
-$description = $fet['description'];
-$doc = $fet['doc'];
+$age = $fet['age'];
+$sex = $fet['sex'];
+$permadd = $fet['perm_address'];
+$cadd = $fet['correspondence_address'];
+$dist = $fet['district'];
+$contact = $fet['contact_no'];
+$distype = $fet['disability_type'];
+$discertificate = $fet['disability_certificate_no'];
+$dispercent = $fet['disability_percentage'];
+$disproof = $fet['disability_proof'];
+$issueautho = $fet['issuing_authority'];
+$valid = $fet['valid_upto'];
+$belongsto = $fet['belongsto'];
+$compdesc = $fet['complaint_description'];
+$supproof = $fet['supplementary_proof'];
+$resname = $fet['respondent_name'];
+$resaddress = $fet['respondent_address'];
+$status = $fet['status'];
 ?>
             <tr>
+                <!-- <td><?php  $id; ?></td> -->
                 <td><?php echo $cnt; ?></td>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $unid; ?></td>
                 <td><?php echo $name; ?></td>
-                <td><?php echo $description; ?></td>
-                <td><a href="../images/notices/<?php echo $doc; ?>" download><?php echo $doc; ?></a></td>
-                <td>
-            
-                  <a href="adminnotices.php?step=delete&q=<?php echo $id; ?>" onClick="return deleteconfirm()"  class="btn btn-danger"><i class='far'>&#xf2ed;</i></a>&nbsp;&nbsp;
-                 <a href="adminfilesupdate.php?step=noticeupdate&q=<?php echo $id; ?>"  class="btn" id="updatebtn"><i class='far'>&#xf044;</i></a>
-                 
-               </td>
+                <td><?php echo $age; ?></td>
+                <td><?php echo $sex; ?></td>
+                <td><?php echo $permadd; ?></td>
+                <td><?php echo $cadd; ?></td>
+                <td><?php echo $dist; ?></td>
+                <td><?php echo $contact; ?></td>
+                <td><?php echo $distype; ?></td>
+                <td><?php echo $discertificate; ?></td>
+                <td><?php echo $dispercent; ?></td>
+                <td><a href="../dwsc_complaints/public/grivance/<?php echo $disproof; ?>" download style="color:blue"><?php echo $disproof; ?></a></td>
+                <td><?php echo $issueautho; ?></td>
+                <td><?php echo $valid; ?></td>
+                <td><?php echo $belongsto; ?></td>
+                <td><?php echo $compdesc; ?></td>
+                <td><a href="../dwsc_complaints/public/grivance/<?php echo $supproof; ?>" download style="color:blue"><?php echo $supproof; ?></a></td>
+                <td><?php echo $resname; ?></td>
+                <td><?php echo $resaddress; ?></td>
+                <td><?php echo $status; ?></td>
+                <td><a href="active.php?p=pending&id=<?php echo $id;?>" class="btn btn-primary" onclick="return updateconfirm()">Pending</a>
+ <a href="active.php?u=underprocess&id=<?php echo $id; ?>" class="btn btn-danger" onclick="return updateconfirm()">Under Process</a>
+<a href="active.php?t=tobeattended&id=<?php echo $id;?>" class="btn btn-primary" onclick="return updateconfirm()">To Be Attended</a></td>
               
             </tr>
             <?php

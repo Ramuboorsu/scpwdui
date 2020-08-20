@@ -7,112 +7,127 @@ if($_SESSION['userSession'] == '')
 }
 //include dbconnect
 include("dbconnect.php");
-if(isset($_POST['insert']))
+$uid = @$_GET['id'];
+if(isset($_POST["Update"]))
+{ 
+
+ $id = $_POST['id'];
+  $mainheading = $_POST['mainheading'];
+$description = $_POST['description'];
+$imgcontent = $_POST['imgcontent'];
+$filename = $_FILES['file']['name'];
+
+$videoname = $_POST['videoname'];
+if($videoname != 'null')
+{
+if($filename == '')
+{
+   $sel = mysqli_query($con,"select * from resources_text where id = $id");
+   $name = mysqli_fetch_assoc($sel);
+   $vdo = $name['video'];
+}
+else
+{
+  $target_file =  "../images/videos/news/";
+  $vdo = $filename;
+   $fullname =  $target_file.$filename;
+   move_uploaded_file($_FILES['file']['tmp_name'],$fullname);
+}
+}
+else
+{
+  $vdo = 'null';
+}
+
+  $up = mysqli_query($con,"update newsEvents set mainHeading='$mainheading',description='$description',imgcontent='$imgcontent',video='$vdo' where aid='$id'");
+
+ if($up)
+{
+    echo '<script>alert("successfully Updated");window.location.href="newsEvents.php";</script>';
+  $msg = "successfully Updated";
+
+}
+else
+{
+  $msgerr = "please update and click button otherwise don't click";
+}
+
+
+}
+
+if(isset($_POST['news']))
  {
 
-  $sel = mysqli_query($con,"select * from headerfooter");
+  $sel = mysqli_query($con,"select * from newsEvents where aid=$uid");
 while($fet = mysqli_fetch_assoc($sel))
 {
 
-$image1 = $fet['image1'];
+$image1 = $fet['image'];
 
 $image2 = $fet['image2'];
-$image3 = $fet['image3'];
 
-$image4 = $fet['image4'];
-
-$image5 = $fet['image5'];
 }
 
-  // echo $_FILES['file1']['name'];  
- $output_dir = "../images/banner/";
- $output_dir2 = "../images/";
+ $output_dir = "../images/news/";
   $target_file = $output_dir;
 
   $filename1 = $_FILES['file1']['name'];
+  //echo $filename1;
   if($filename1 == '' )
   {
     $filename1 = $image1;
   }
+
+  if($uid == 2)
+  {
   $filename2 = $_FILES['file2']['name'];
   if($filename2 == '' )
   {
     $filename2 = $image2;
   }
-  $filename3 = $_FILES['file3']['name'];
-  if($filename3 == '' )
-  { 
-    $filename3 =$image3;
   }
-  $filename4 = $_FILES['file4']['name'];
-  if($filename4 == '' )
+  else
   {
-    $filename4 =$image4;
-  }
-  $filename5 = $_FILES['file5']['name'];
-  if($filename5 == '' )
-  {
-    $filename5 = $image5;
+    $filename2 = '';
   }
 
  $pathfullname =  $target_file;
-   $pathfullname2 = $output_dir2;
   // Upload file
-  if(move_uploaded_file($_FILES['file1']['tmp_name'],$pathfullname.$filename1) or move_uploaded_file($_FILES['file2']['tmp_name'],$pathfullname2.$filename2) or  move_uploaded_file($_FILES['file3']['tmp_name'],$pathfullname2.$filename3) or move_uploaded_file($_FILES['file4']['tmp_name'],$pathfullname2.$filename4) or  move_uploaded_file($_FILES['file5']['tmp_name'],$pathfullname.$filename5 )){
+   if($uid == 2)
+  {
+  if(move_uploaded_file($_FILES['file1']['tmp_name'],$pathfullname.$filename1) or move_uploaded_file($_FILES['file2']['tmp_name'],$pathfullname.$filename2)){
 
-           $insert_img = mysqli_query($con,"update headerfooter SET image1='$filename1',image2='$filename2',image3='$filename3',image4='$filename4',image5='$filename5'");
-           if( $insert_img)
+           $insert_img = mysqli_query($con,"update newsEvents SET image='$filename1',image2='$filename2' where aid=$uid");
+           if($insert_img)
            {
-echo '<script>alert("Image Uploaded");</script>';
+echo '<script>alert("Successfully uploaded");window.location.href="newsupdate.php?id='.$uid.'"</script>';
 }
       
           }
            else{
-            echo '<script>alert("Please Select Files and Upload");window.location.href="headerupdate2.php";</script>';
+            echo '<script>alert("Please Select File and Upload");window.location.href="newsupdate.php?id='.$uid.'";</script>';
           }
-
-
            
-
-} 
-
-if(isset($_POST['update']))
- {
-//   echo '<script>alert("text updated");</script>';
-//   $text1 = mysql_real_escape_string($_POST['text1']);
-
-
-// $text3 = mysql_real_escape_string($_POST['text3']);
-
-// $text4 = mysql_real_escape_string($_POST['text4']);
-
-// $text5 = mysql_real_escape_string($_POST['text5']);
-
-  $text1 = mysqli_real_escape_string($con,$_POST['text1']);
-
-
-$text3 =mysqli_real_escape_string($con,$_POST['text2']);
-
-$text4 =mysqli_real_escape_string($con,$_POST['text3']);
-
-$text5 = mysqli_real_escape_string($con,$_POST['text4']);
-
-// echo '<script>alert("'.$text1.'");</script>';
-// echo '<script>alert("'.$text3.'");</script>';
-// echo '<script>alert("'.$text4.'");</script>';
-// echo '<script>alert("'.$text5.'");</script>';
-
-           $insert_txt = mysqli_query($con,"update headerfooter SET text1='$text1',text3='$text3',text4='$text4',text5='$text5'");
-           if($insert_txt)
-           {
-echo '<script>alert("Successfully Updated");window.location.href="headerupdate2.php";</script>';
 }
 else
 {
-  echo '<script>alert("Updation Failed");window.location.href="headerupdate2.php";</script>';
-}
+   if(move_uploaded_file($_FILES['file1']['tmp_name'],$pathfullname.$filename1) ){
 
-} 
+           $insert_img = mysqli_query($con,"update newsEvents SET image='$filename1'where aid=$uid");
+           if($insert_img)
+           {
+echo '<script>alert("Successfully uploaded");window.location.href="newsupdate.php?id='.$uid.'"</script>';
+}
+      
+          }
+           else{
+            echo '<script>alert("Please Select File and Upload");window.location.href="newsupdate.php?id='.$uid.'";</script>';
+          }
+           
+}
+           
+
+}
 
 
 ?>
@@ -145,14 +160,15 @@ else
     <script src="js/confirmmsg.js"></script>
      <!--icons-->
      <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-
+<!--ckeditor-->
+<script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 </head>
 
 <body>
     <div class="main-wrapper">
     <!-- style for active class -->
     <style>
-  #header{
+  #newsevents{
      color:black;
  }
     </style>
@@ -167,21 +183,37 @@ else
     <div class="container-fluid mb-70">
     <section class="main-content-wrapper section_padding_50">
         <div class="container-fluid">
+        <?php if($uid != 4)
+{
+?>  
             <div class="card">
+ 
                 <div class="card-body">
-                    <h5 class="card-title"><b>Add Header Images</b></h5>
-                    <form method="post" enctype='multipart/form-data'>
+                    <h5 class="card-title"><b>Add News Images</b></h5>
+                    <?php
+
+$sel = mysqli_query($con,"select * from newsEvents where aid=$uid");
+while($fet = mysqli_fetch_assoc($sel)){
+  $id = $fet['aid'];
+$image1 = $fet['image'];
+$image2 = $fet['image2'];
+
+}
+?>
+                    <form method="post" enctype="multipart/form-data">
                 <div class="row">
-                   
+
                 <div class="col-4">
                     <h6>Image 1</h6>
                     <div class='file-input'>
-                        <input type="file" name="file1">
+                        <input type="file"  type="file" name="file1" id="file">
                         <span class='button'>Choose</span>
                         <span class='label' data-js-label>No file selected</label>
                       </div>
                 </div>
-        
+                <?php if($uid == 2)
+{
+?>
                 <div class="col-4">
                     <h6>Image 2</h6>
                     <div class='file-input'>
@@ -191,127 +223,117 @@ else
                       </div>
 
                 </div>
-                <div class="col-4">
-                    <h6>Image 3</h6>
-                    <div class='file-input'>
-                        <input type="file" name="file3">
-                        <span class='button'>Choose</span>
-                        <span class='label' data-js-label>No file selected</label>
-                      </div>
-                    
-                </div>
+                <?php
+}
+?>
+             
             
-                </div>
-<br>
-                <div class="row">
+               
                     <div class="col-4">
-                        <h6>Image 4</h6>
-                        <div class='file-input'>
-                            <input type="file" name="file4">
-                            <span class='button'>Choose</span>
-                            <span class='label' data-js-label>No file selected</label>
-                          </div>
-                    </div>
-            
-                    <div class="col-4">
-                        <h6>Image 5</h6>
-                        <div class='file-input'>
-                            <input type="file" name="file5">
-                            <span class='button'>Choose</span>
-                            <span class='label' data-js-label>No file selected</label>
-                          </div>
-    
-                    </div>
-                    <div class="col-4">
-                        <button type="submit" name="insert" class="btn-upload" id="headerupdate-btn" type="button">Upload</button>
+                        <button type="submit" name='news' class="btn-upload" id="headerupdate-btn">Upload</button>
                         
                     </div>
                 
                     </div>
-
+                   
             </div>
             </form>
             </div>
 
     
         </div>
-
+        <?php
+}
+?>
 <br>
         <!--Header content list-->
 
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><b>Header Content List</b></h5>
-                    <?php
+                    <h5 class="card-title"><b>News/Events Update</b></h5>
+<?php
 //code to get details from database
-$sel = mysqli_query($con,"select * from headerfooter");
+
+$id = @$_GET['id'];
+$sel = mysqli_query($con,"select * from newsEvents where aid =$id");
 while($fet = mysqli_fetch_assoc($sel))
 {
-$id = $fet['id'];
-$image1 = $fet['image1'];
-$text1 = $fet['text1'];
+$id = $fet['aid'];
+$mainheading = $fet['mainHeading'];
+$description = $fet['description'];
+$image = $fet['image'];
 $image2 = $fet['image2'];
-$image3 = $fet['image3'];
-$text2 = $fet['text3'];
-$image4 = $fet['image4'];
-$text3 = $fet['text4'];
-$image5 = $fet['image5'];
-$text4 = $fet['text5'];
+$imgcontent = $fet['imgcontent'];
+$videoname = $fet['video'];
+
   ?>
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                 <div class="row">
                 <div class="col-4">
-                    <h6>Text 1</h6>
+                    <h6>Main Heading</h6>
                
                         <div class="form-group">
-                            <input type="text"  placeholder="Enter Text Here" value="<?php echo $text1; ?>" name="text1" class="form-control">
+                        <input type="hidden" placeholder="Enter id" value="<?php echo $id; ?>" name="id" readonly>
+                            <input type="text"  id="mainheadingtext" type="text" placeholder="Enter Main Heading" value="<?php echo $mainheading; ?>" 
+        name="mainheading" required class="form-control">
                         </div>
                  
                 </div>
         
-                <div class="col-4">
-                    <h6>Text 2</h6>
-                    
-                  
-                        <div class="form-group">
-                            <input type="text"  placeholder="Enter Text Here" value="<?php echo $text2; ?>" name="text2" class="form-control">
-                        </div>
-                 
-
-                </div>
+        
            
         
                 <div class="col-4">
-                    <h6>Text 3</h6>
+                    <h6>Video Name</h6>
                     
                    
                         <div class="form-group">
-                            <input type="text"  placeholder="Enter Text Here" value="<?php echo $text3; ?>" name="text3" class="form-control">
+                            <input type="text"  id="mainheadingtext" name="videoname" value="<?php echo $videoname; ?>" placeholder="video" class="form-control">
                         </div>
                 
 
                 </div>
            
-
+                <div class="col-4">
+            <h6>Video</h6>
+        
+                <div class="form-group">
+                    <input type="file"  type="file" placeholder="UserName" name="file" class="form-control">
+                </div>
+        
+        </div>
                 </div>
 
 
 <br>
     <!--2nd row for images and text-->
     <div class="row">
+      
         <div class="col-4">
-            <h6>Text 4</h6>
-        
-                <div class="form-group">
-                    <input type="text"  placeholder="Enter Text Here" value="<?php echo $text4; ?>" name="text4" class="form-control">
+                    <h6>Description</h6>
+                    
+                  
+                        <div class="form-group">
+                        <textarea class="form-control" id="description" name="description"  rows="3"><?php echo $description; ?></textarea>
+                        </div>
+                 
+
                 </div>
-        
-        </div>
+                <div class="col-4">
+                    <h6>Image Content</h6>
+                    
+                  
+                        <div class="form-group">
+                        <textarea class="form-control" id="imgcontent" name="imgcontent"  rows="3"><?php echo $imgcontent; ?></textarea>
+                        </div>
+                 
+
+                </div>
 
         <div class="col-4">
-            <button type="submit" name="update" class="btn-upload"  onClick="return updateconfirm()"  id="headerupdate-btn" >Update</button>
-            <button type="submit"  formaction="adminhome.php" class="btn-upload" id="headercancel-btn">Cancel</button>
+            <button type="submit" name="Update" class="btn-upload"  onClick="return updateconfirm()"  id="headerupdate-btn" >Update</button>
+            <button type="submit"  formaction="newsEvents.php" class="btn-upload" id="headercancel-btn">Cancel</button>
         </div>
 
     
@@ -373,6 +395,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script>
         $(document).ready( function () {
         $('#zero_config').DataTable();
     } );
+
+    //ckeditor
+CKEDITOR.replace( 'description',{
+                    removePlugins: 'elementspath',
+                    
+                });
+
+                CKEDITOR.replace( 'imgcontent',{
+                    removePlugins: 'elementspath',
+                    
+                });
     </script>
     <!--file choosen css-->
     <script>

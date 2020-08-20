@@ -134,11 +134,11 @@ while($img=mysqli_fetch_assoc($selheader)){
                                             <a class="nav-link" href="admingallery.php" id="gallery">Gallery</a>
                                         </li>
                                         <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" 
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Grievance</a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <a class="dropdown-item" href="#">Count</a>
-                                                <a class="dropdown-item" href="#">Notice Count</a>
+                                                <a class="dropdown-item" href="count.php">Count</a>
+                                                <a class="dropdown-item" href="noticescount.php">Notice Count</a>
                                                 <a class="dropdown-item" href="#">Insert Grievance</a>
                                                
                                             </div>
@@ -147,10 +147,10 @@ while($img=mysqli_fetch_assoc($selheader)){
                                             <a class="nav-link" href="adminRedirectlinks.php" id="links">Redirect Links</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Contact Us</a>
+                                            <a class="nav-link" href="contactupdate.php" id="contact">Contact Us</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#">Who's Who</a>
+                                            <a class="nav-link" href="whos.php" id="who">Who's Who</a>
                                         </li>
                                     </ul>
                                  
